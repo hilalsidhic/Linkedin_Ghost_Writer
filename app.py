@@ -13,42 +13,44 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS for modern, aesthetic design
+# Custom CSS for clean, aesthetic design
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css');
     
     .stApp {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #f8fafc;
         font-family: 'Inter', sans-serif;
     }
     
     .main-container {
         background: white;
-        border-radius: 20px;
-        padding: 3rem;
-        margin: 2rem auto;
-        max-width: 800px;
-        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        padding: 2.5rem;
+        margin: 1rem auto;
+        max-width: 700px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        border: 1px solid #e2e8f0;
     }
     
     .header {
         text-align: center;
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid #e2e8f0;
     }
     
     .header h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
         font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #1e40af;
         margin-bottom: 0.5rem;
     }
     
     .header p {
-        font-size: 1.2rem;
-        color: #6b7280;
+        font-size: 1rem;
+        color: #64748b;
         margin: 0;
     }
     
@@ -57,52 +59,56 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         margin: 2rem 0;
-        gap: 1rem;
+        gap: 0.75rem;
     }
     
     .step-circle {
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-weight: 600;
-        font-size: 1.2rem;
-        transition: all 0.3s ease;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        border: 2px solid #e2e8f0;
     }
     
     .step-circle.active {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #1e40af;
         color: white;
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        border-color: #1e40af;
+        box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
     }
     
     .step-circle.completed {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: #059669;
         color: white;
+        border-color: #059669;
     }
     
     .step-circle.inactive {
-        background: #f3f4f6;
-        color: #9ca3af;
+        background: #f8fafc;
+        color: #94a3b8;
+        border-color: #e2e8f0;
     }
     
     .step-arrow {
-        font-size: 1.5rem;
-        color: #d1d5db;
+        font-size: 1.2rem;
+        color: #cbd5e1;
     }
     
     .step-content {
         background: #f8fafc;
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 2rem;
-        margin: 2rem 0;
+        margin: 1.5rem 0;
         border: 1px solid #e2e8f0;
     }
     
     .step-title {
-        font-size: 1.5rem;
+        font-size: 1.25rem;
         font-weight: 600;
         color: #1e293b;
         margin-bottom: 1rem;
@@ -110,73 +116,109 @@ st.markdown("""
     }
     
     .instruction-card {
-        background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        background: #eff6ff;
         border: 1px solid #bfdbfe;
-        border-radius: 12px;
+        border-radius: 8px;
         padding: 1.5rem;
         margin: 1rem 0;
     }
     
+    .instruction-card h4 {
+        color: #1e40af;
+        margin-bottom: 1rem;
+    }
+    
     .success-card {
-        background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        background: #ecfdf5;
         border: 1px solid #a7f3d0;
-        border-radius: 12px;
+        border-radius: 8px;
         padding: 1.5rem;
         margin: 1rem 0;
+    }
+    
+    .success-card h4 {
+        color: #059669;
+        margin-bottom: 0.5rem;
     }
     
     .generated-post {
         background: white;
-        border-radius: 12px;
-        padding: 2rem;
+        border-radius: 8px;
+        padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         border: 1px solid #e2e8f0;
+        font-size: 0.95rem;
+        line-height: 1.6;
     }
     
-    .navigation-buttons {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 2rem;
+    .stButton > button {
+        border-radius: 8px !important;
+        font-weight: 500 !important;
+        transition: all 0.2s ease !important;
     }
     
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    .stButton > button[kind="primary"] {
+        background: #1e40af !important;
+        border-color: #1e40af !important;
     }
     
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    .stButton > button[kind="primary"]:hover {
+        background: #1d4ed8 !important;
+        border-color: #1d4ed8 !important;
+        transform: translateY(-1px);
     }
     
-    .btn-secondary {
-        background: #f8fafc;
-        color: #64748b;
-        border: 1px solid #e2e8f0;
-        padding: 0.75rem 2rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.3s ease;
+    .stButton > button[kind="secondary"] {
+        background: white !important;
+        color: #64748b !important;
+        border: 1px solid #e2e8f0 !important;
     }
     
-    .btn-secondary:hover {
-        background: #f1f5f9;
+    .stButton > button[kind="secondary"]:hover {
+        background: #f8fafc !important;
+        border-color: #cbd5e1 !important;
+    }
+    
+    .stTextInput > div > div > input {
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+    
+    .stTextArea > div > div > textarea {
+        border-radius: 8px !important;
+        border: 1px solid #e2e8f0 !important;
+    }
+    
+    .stFileUploader > div {
+        border-radius: 8px !important;
+        border: 2px dashed #cbd5e1 !important;
     }
     
     .footer {
         text-align: center;
-        margin-top: 3rem;
-        padding-top: 2rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
         border-top: 1px solid #e2e8f0;
         color: #64748b;
+        font-size: 0.875rem;
+    }
+    
+    /* Remove Streamlit branding */
+    .stApp > header {
+        display: none;
+    }
+    
+    .stDeployButton {
+        display: none;
+    }
+    
+    #MainMenu {
+        display: none;
+    }
+    
+    footer {
+        display: none;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -283,24 +325,23 @@ if st.session_state.current_step == 1:
     )
     
     # Instructions card
-    with st.expander("📋 How to export your LinkedIn posts", expanded=True):
+    with st.expander("How to export your LinkedIn posts", expanded=False):
         st.markdown("""
         <div class="instruction-card">
-            <h4>Follow these steps to export your posts:</h4>
+            <h4>Export Steps:</h4>
             <ol>
-                <li><strong>Go to your LinkedIn Profile</strong> → Activity → Posts</li>
-                <li><strong>Expand all posts</strong> you want the AI to learn from</li>
-                <li><strong>Scroll down</strong> to load more posts</li>
-                <li><strong>Right-click</strong> → Save As → choose <strong>Webpage, Single File (.mhtml)</strong></li>
+                <li>Go to your LinkedIn Profile → Activity → Posts</li>
+                <li>Expand all posts you want the AI to learn from</li>
+                <li>Scroll down to load more posts</li>
+                <li>Right-click → Save As → choose Webpage, Single File (.mhtml)</li>
             </ol>
-            <p><em>💡 Tip: The more posts you include, the better we can understand your writing style!</em></p>
         </div>
         """, unsafe_allow_html=True)
     
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col2:
-        if st.button("Next: Upload File →", type="primary", use_container_width=True):
+        if st.button("Next: Upload File", type="primary", use_container_width=True):
             next_step()
 
 # Step 2: File Upload
@@ -321,9 +362,8 @@ elif st.session_state.current_step == 2:
         # Display file info
         st.markdown(f"""
         <div class="success-card">
-            <h4>✅ File uploaded successfully!</h4>
-            <p><strong>File:</strong> {uploaded_file.name}<br>
-            <strong>Size:</strong> {uploaded_file.size} bytes</p>
+            <h4>File uploaded successfully</h4>
+            <p>{uploaded_file.name}</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -335,10 +375,10 @@ elif st.session_state.current_step == 2:
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("← Back", type="secondary", use_container_width=True):
+        if st.button("Back", type="secondary", use_container_width=True):
             previous_step()
     with col2:
-        if st.session_state.mhtml_file and st.button("Next: Analyze Style →", type="primary", use_container_width=True):
+        if st.session_state.mhtml_file and st.button("Next: Analyze Style", type="primary", use_container_width=True):
             next_step()
 
 # Step 3: Analyze Writing Style
@@ -351,7 +391,7 @@ elif st.session_state.current_step == 3:
     
     if st.session_state.mhtml_file:
         if not st.session_state.writing_style:
-            if st.button("🔍 Analyze My Posts", type="primary", use_container_width=True):
+            if st.button("Analyze My Posts", type="primary", use_container_width=True):
                 try:
                     with st.spinner("Analyzing your writing style... This may take a moment."):
                         # Load and extract posts
@@ -382,8 +422,7 @@ elif st.session_state.current_step == 3:
             # Display writing style analysis
             st.markdown(f"""
             <div class="success-card">
-                <h4>✨ Your Unique Writing Style</h4>
-                <p>Based on your top-performing posts, here's your unique writing style:</p>
+                <h4>Your Writing Style Analysis</h4>
             </div>
             """, unsafe_allow_html=True)
             
@@ -396,10 +435,10 @@ elif st.session_state.current_step == 3:
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("← Back", type="secondary", use_container_width=True):
+        if st.button("Back", type="secondary", use_container_width=True):
             previous_step()
     with col2:
-        if st.session_state.writing_style and st.button("Next: Generate Post →", type="primary", use_container_width=True):
+        if st.session_state.writing_style and st.button("Next: Generate Post", type="primary", use_container_width=True):
             next_step()
 
 # Step 4: Generate New Post
@@ -418,7 +457,7 @@ elif st.session_state.current_step == 4:
         help="Be specific about what you want to discuss. The more details you provide, the better the generated post will be."
     )
     
-    if st.button("✏️ Generate Post", type="primary", use_container_width=True):
+    if st.button("Generate Post", type="primary", use_container_width=True):
         if st.session_state.topic.strip():
             try:
                 with st.spinner("Generating your post... ✨"):
@@ -440,7 +479,7 @@ elif st.session_state.current_step == 4:
     if st.session_state.generated_post:
         st.markdown(f"""
         <div class="success-card">
-            <h4>🎉 Your Generated Post</h4>
+            <h4>Generated Post</h4>
         </div>
         """, unsafe_allow_html=True)
         
@@ -451,14 +490,14 @@ elif st.session_state.current_step == 4:
         """, unsafe_allow_html=True)
         
         # Copy to clipboard button
-        if st.button("📋 Copy to Clipboard", type="primary", use_container_width=True):
+        if st.button("Copy to Clipboard", type="primary", use_container_width=True):
             copy_to_clipboard(st.session_state.generated_post)
-            st.success("✅ Copied to clipboard!")
+            st.success("Copied to clipboard!")
     
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("← Back", type="secondary", use_container_width=True):
+        if st.button("Back", type="secondary", use_container_width=True):
             previous_step()
     with col2:
         if st.session_state.generated_post and st.button("Start Over", type="secondary", use_container_width=True):
