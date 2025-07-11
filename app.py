@@ -6,12 +6,10 @@ from style_analyzer import analyze_style
 from generator import generate_post
 
 # Page configuration
-st.set_page_config(
-    page_title="Write Like Me - LinkedIn Ghostwriter",
-    page_icon="✍️",
-    layout="centered",
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(page_title="Write Like Me - LinkedIn Ghostwriter",
+                   page_icon="✍️",
+                   layout="centered",
+                   initial_sidebar_state="collapsed")
 
 # Custom CSS for clean, aesthetic design
 st.markdown("""
@@ -221,7 +219,8 @@ st.markdown("""
         display: none;
     }
 </style>
-""", unsafe_allow_html=True)
+""",
+            unsafe_allow_html=True)
 
 # Initialize session state
 if 'current_step' not in st.session_state:
@@ -239,9 +238,11 @@ if 'linkedin_url' not in st.session_state:
 if 'topic' not in st.session_state:
     st.session_state.topic = ""
 
+
 def copy_to_clipboard(text):
     """Copy text to clipboard using JavaScript"""
-    escaped_text = text.replace('`', r'\`').replace('"', r'\"').replace("'", r"\'")
+    escaped_text = text.replace('`', r'\`').replace('"',
+                                                    r'\"').replace("'", r"\'")
     html_content = f"""
     <script>
         navigator.clipboard.writeText(`{escaped_text}`).then(function() {{
@@ -253,17 +254,25 @@ def copy_to_clipboard(text):
     """
     st.components.v1.html(html_content, height=0)
 
+
 def render_step_indicator():
     """Render the step indicator with circles and arrows"""
-    steps = [
-        {"number": 1, "title": "LinkedIn URL"},
-        {"number": 2, "title": "Upload File"},
-        {"number": 3, "title": "Analyze Style"},
-        {"number": 4, "title": "Generate Post"}
-    ]
-    
+    steps = [{
+        "number": 1,
+        "title": "Export Posts"
+    }, {
+        "number": 2,
+        "title": "Upload File"
+    }, {
+        "number": 3,
+        "title": "Analyze Style"
+    }, {
+        "number": 4,
+        "title": "Generate Post"
+    }]
+
     indicator_html = '<div class="step-indicator">'
-    
+
     for i, step in enumerate(steps):
         # Determine step state
         if step["number"] < st.session_state.current_step:
@@ -272,16 +281,17 @@ def render_step_indicator():
             state = "active"
         else:
             state = "inactive"
-        
+
         # Add circle
         indicator_html += f'<div class="step-circle {state}">{step["number"]}</div>'
-        
+
         # Add arrow (except for last step)
         if i < len(steps) - 1:
             indicator_html += '<div class="step-arrow">→</div>'
-    
+
     indicator_html += '</div>'
     return indicator_html
+
 
 def next_step():
     """Move to next step"""
@@ -289,11 +299,13 @@ def next_step():
         st.session_state.current_step += 1
         st.rerun()
 
+
 def previous_step():
     """Move to previous step"""
     if st.session_state.current_step > 1:
         st.session_state.current_step -= 1
         st.rerun()
+
 
 # Main container
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
@@ -304,26 +316,23 @@ st.markdown("""
     <h1>✍️ Write Like Me</h1>
     <p>Your Personal LinkedIn Ghostwriter Agent</p>
 </div>
-""", unsafe_allow_html=True)
+""",
+            unsafe_allow_html=True)
 
 # Step indicator
 st.markdown(render_step_indicator(), unsafe_allow_html=True)
 
-# Step 1: LinkedIn Profile URL Input
+# Step 1: Export Instructions
 if st.session_state.current_step == 1:
     st.markdown("""
     <div class="step-content">
-        <div class="step-title">🔗 LinkedIn Profile Input</div>
+        <div class="step-title">📋 Export Your LinkedIn Posts</div>
     </div>
-    """, unsafe_allow_html=True)
-    
-    st.session_state.linkedin_url = st.text_input(
-        "Paste Your LinkedIn Profile URL",
-        value=st.session_state.linkedin_url,
-        placeholder="https://linkedin.com/in/yourprofile",
-        help="We'll help you export your posts. Nothing is stored on our servers."
-    )
-    
+    """,
+                unsafe_allow_html=True)
+
+
+
     # Instructions card
     with st.expander("How to export your LinkedIn posts", expanded=False):
         st.markdown("""
@@ -336,12 +345,15 @@ if st.session_state.current_step == 1:
                 <li>Right-click → Save As → choose Webpage, Single File (.mhtml)</li>
             </ol>
         </div>
-        """, unsafe_allow_html=True)
-    
+        """,
+                    unsafe_allow_html=True)
+
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col2:
-        if st.button("Next: Upload File", type="primary", use_container_width=True):
+        if st.button("Next: Upload File",
+                     type="primary",
+                     use_container_width=True):
             next_step()
 
 # Step 2: File Upload
@@ -350,14 +362,14 @@ elif st.session_state.current_step == 2:
     <div class="step-content">
         <div class="step-title">📁 Upload Your MHTML File</div>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+                unsafe_allow_html=True)
+
     uploaded_file = st.file_uploader(
         "Choose your LinkedIn posts file",
         type=['mhtml'],
-        help="We only read this file locally to analyze your style."
-    )
-    
+        help="We only read this file locally to analyze your style.")
+
     if uploaded_file is not None:
         # Display file info
         st.markdown(f"""
@@ -365,20 +377,24 @@ elif st.session_state.current_step == 2:
             <h4>File uploaded successfully</h4>
             <p>{uploaded_file.name}</p>
         </div>
-        """, unsafe_allow_html=True)
-        
+        """,
+                    unsafe_allow_html=True)
+
         # Save uploaded file temporarily
-        with tempfile.NamedTemporaryFile(delete=False, suffix='.mhtml') as tmp_file:
+        with tempfile.NamedTemporaryFile(delete=False,
+                                         suffix='.mhtml') as tmp_file:
             tmp_file.write(uploaded_file.getvalue())
             st.session_state.mhtml_file = tmp_file.name
-    
+
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Back", type="secondary", use_container_width=True):
             previous_step()
     with col2:
-        if st.session_state.mhtml_file and st.button("Next: Analyze Style", type="primary", use_container_width=True):
+        if st.session_state.mhtml_file and st.button("Next: Analyze Style",
+                                                     type="primary",
+                                                     use_container_width=True):
             next_step()
 
 # Step 3: Analyze Writing Style
@@ -387,58 +403,74 @@ elif st.session_state.current_step == 3:
     <div class="step-content">
         <div class="step-title">🔍 Analyze Your Writing Style</div>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+                unsafe_allow_html=True)
+
     if st.session_state.mhtml_file:
         if not st.session_state.writing_style:
-            if st.button("Analyze My Posts", type="primary", use_container_width=True):
+            if st.button("Analyze My Posts",
+                         type="primary",
+                         use_container_width=True):
                 try:
-                    with st.spinner("Analyzing your writing style... This may take a moment."):
+                    with st.spinner(
+                            "Analyzing your writing style... This may take a moment."
+                    ):
                         # Load and extract posts
                         docs = load_mhtml(st.session_state.mhtml_file)
                         posts = extract_posts(docs)
-                        
+
                         if not posts:
-                            st.error("❌ No posts found in the uploaded file. Please make sure you've exported your LinkedIn posts correctly.")
+                            st.error(
+                                "❌ No posts found in the uploaded file. Please make sure you've exported your LinkedIn posts correctly."
+                            )
                         else:
                             # Sort posts by engagement score and take top 5
-                            sorted_posts = sorted(posts, key=lambda x: x[1], reverse=True)
+                            sorted_posts = sorted(posts,
+                                                  key=lambda x: x[1],
+                                                  reverse=True)
                             top_posts = sorted_posts[:5]
-                            
+
                             # Analyze writing style
                             style = analyze_style([p[0] for p in top_posts])
-                            
+
                             # Store in session state
                             st.session_state.posts = posts
                             st.session_state.writing_style = style
-                            
-                            st.success(f"✅ Successfully analyzed {len(posts)} posts!")
+
+                            st.success(
+                                f"✅ Successfully analyzed {len(posts)} posts!")
                             st.rerun()
-                            
+
                 except Exception as e:
                     st.error(f"❌ Error analyzing posts: {str(e)}")
-                    st.error("Please check that your MHTML file is valid and contains LinkedIn posts.")
+                    st.error(
+                        "Please check that your MHTML file is valid and contains LinkedIn posts."
+                    )
         else:
             # Display writing style analysis
             st.markdown(f"""
             <div class="success-card">
                 <h4>Your Writing Style Analysis</h4>
             </div>
-            """, unsafe_allow_html=True)
-            
+            """,
+                        unsafe_allow_html=True)
+
             st.markdown(f"""
             <div class="generated-post">
                 {st.session_state.writing_style.replace(chr(10), '<br>')}
             </div>
-            """, unsafe_allow_html=True)
-    
+            """,
+                        unsafe_allow_html=True)
+
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Back", type="secondary", use_container_width=True):
             previous_step()
     with col2:
-        if st.session_state.writing_style and st.button("Next: Generate Post", type="primary", use_container_width=True):
+        if st.session_state.writing_style and st.button(
+                "Next: Generate Post", type="primary",
+                use_container_width=True):
             next_step()
 
 # Step 4: Generate New Post
@@ -447,60 +479,68 @@ elif st.session_state.current_step == 4:
     <div class="step-content">
         <div class="step-title">✏️ Generate a New Post</div>
     </div>
-    """, unsafe_allow_html=True)
-    
+    """,
+                unsafe_allow_html=True)
+
     st.session_state.topic = st.text_area(
         "What do you want to write about next?",
         value=st.session_state.topic,
         placeholder="Enter your topic ideas, bullet points, or key messages...",
         height=100,
-        help="Be specific about what you want to discuss. The more details you provide, the better the generated post will be."
+        help=
+        "Be specific about what you want to discuss. The more details you provide, the better the generated post will be."
     )
-    
+
     if st.button("Generate Post", type="primary", use_container_width=True):
         if st.session_state.topic.strip():
             try:
                 with st.spinner("Generating your post... ✨"):
                     # Generate new post
-                    generated_post = generate_post(st.session_state.topic, st.session_state.writing_style)
+                    generated_post = generate_post(
+                        st.session_state.topic, st.session_state.writing_style)
                     st.session_state.generated_post = generated_post
-                    
+
                     # Show success animation
                     st.balloons()
                     st.rerun()
-                    
+
             except Exception as e:
                 st.error(f"❌ Error generating post: {str(e)}")
                 st.error("Please try again or check your internet connection.")
         else:
             st.warning("⚠️ Please enter a topic before generating a post.")
-    
+
     # Display generated post
     if st.session_state.generated_post:
         st.markdown(f"""
         <div class="success-card">
             <h4>Generated Post</h4>
         </div>
-        """, unsafe_allow_html=True)
-        
+        """,
+                    unsafe_allow_html=True)
+
         st.markdown(f"""
         <div class="generated-post">
             {st.session_state.generated_post.replace(chr(10), '<br>')}
         </div>
-        """, unsafe_allow_html=True)
-        
+        """,
+                    unsafe_allow_html=True)
+
         # Copy to clipboard button
-        if st.button("Copy to Clipboard", type="primary", use_container_width=True):
+        if st.button("Copy to Clipboard",
+                     type="primary",
+                     use_container_width=True):
             copy_to_clipboard(st.session_state.generated_post)
             st.success("Copied to clipboard!")
-    
+
     # Navigation
     col1, col2 = st.columns([1, 1])
     with col1:
         if st.button("Back", type="secondary", use_container_width=True):
             previous_step()
     with col2:
-        if st.session_state.generated_post and st.button("Start Over", type="secondary", use_container_width=True):
+        if st.session_state.generated_post and st.button(
+                "Start Over", type="secondary", use_container_width=True):
             # Reset session state
             st.session_state.current_step = 1
             st.session_state.mhtml_file = None
@@ -516,7 +556,8 @@ st.markdown("""
 <div class="footer">
     <p>Built with ❤️ for the AI Agent Challenge</p>
 </div>
-""", unsafe_allow_html=True)
+""",
+            unsafe_allow_html=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
 
