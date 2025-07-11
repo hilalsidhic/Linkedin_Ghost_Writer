@@ -1,0 +1,71 @@
+**“Design a beautiful, clean web app for my ‘Write Like Me’ personal LinkedIn Ghostwriter Agent.
+It should feel modern, trustworthy, and effortless — like a premium SaaS onboarding flow.
+
+🎯 User Journey
+Step 1 — LinkedIn Profile Input:
+
+Top section: a big, centered input field labeled “Paste Your LinkedIn Profile URL”
+
+Subtext below: “We’ll help you export your posts. Don’t worry, nothing is stored on our servers.”
+
+Add a clear instruction card or collapsible FAQ:
+
+How to export your posts:
+1️⃣ Go to your LinkedIn Profile → Activity → Posts
+2️⃣ Expand all posts you want the AI to learn from
+3️⃣ Scroll down to load more
+4️⃣ Right-click → Save As → choose Webpage, Single File (.mhtml)
+
+Step 2 — Upload MHTML File:
+
+Elegant file drop zone: drag & drop or click to select.
+
+Accept .mhtml only, show file name & size.
+
+Show progress bar or file preview icon.
+
+Add a tiny helper text: “We only read this file locally to analyze your style.”
+
+Step 3 — Analyze My Writing Style:
+
+Large primary CTA button: “🔍 Analyze My Posts”
+
+On click:
+
+Show spinner or a fun progress animation.
+
+Display a stylish card: “✨ Your Unique Writing Style” with the output nicely formatted — headings, bullet points, or highlighted keywords.
+
+Step 4 — Generate a New Post:
+
+Below style summary, a new section:
+
+Label: “What do you want to write about next?”
+
+Clean multi-line text input for topic ideas or bullet points.
+
+Button: “✏️ Generate Post”
+
+On click: show AI magic — display the generated post in a beautiful, readable block, with a “Copy to Clipboard” button and maybe a subtle confetti animation when done.
+
+🌟 Design Style
+Clean, bright, minimal.
+
+Friendly rounded fonts (e.g., Inter, Nunito, or a modern sans-serif).
+
+Soft shadows, rounded cards, subtle hover animations.
+
+Highlight brand color (e.g., LinkedIn blue accent) for buttons and headings.
+
+Use clear step dividers — maybe numbered badges: 1️⃣ 2️⃣ 3️⃣
+
+⚙️ Technical Details
+Tech stack: React or Next.js with Tailwind CSS (or Chakra if you like).
+
+Add dummy API calls for /analyze and /generate endpoints — use placeholders.
+
+Mobile responsive: center aligned on all devices.
+
+Optional: Tiny footer note: “Built with ❤️ for the AI Agent Challenge.”
+
+Deliver a single clean page that feels like a delightful onboarding flow — the user should feel excited, confident, and safe sharing their writing style with the AI.”
