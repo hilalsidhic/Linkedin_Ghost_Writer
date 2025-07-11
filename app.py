@@ -259,7 +259,7 @@ def render_step_indicator():
     """Render the step indicator with circles and arrows"""
     steps = [{
         "number": 1,
-        "title": "Export Posts"
+        "title": "LinkedIn URL"
     }, {
         "number": 2,
         "title": "Upload File"
@@ -307,31 +307,53 @@ def previous_step():
         st.rerun()
 
 
+# Header at top of page
+st.markdown("""
+<div style="text-align: center; padding: 1rem 0 2rem 0;">
+    <h1 style="font-size: 2.5rem; font-weight: 700; color: #1e40af; margin: 0;">✍️ Write Like Me</h1>
+    <p style="font-size: 1.2rem; color: #64748b; margin: 0.5rem 0;">Your Personal LinkedIn Ghostwriter Agent</p>
+</div>
+""", unsafe_allow_html=True)
+
 # Main container
 st.markdown('<div class="main-container">', unsafe_allow_html=True)
-
-# Header
-st.markdown("""
-<div class="header">
-    <h1>✍️ Write Like Me</h1>
-    <p>Your Personal LinkedIn Ghostwriter Agent</p>
-</div>
-""",
-            unsafe_allow_html=True)
 
 # Step indicator
 st.markdown(render_step_indicator(), unsafe_allow_html=True)
 
-# Step 1: Export Instructions
+# Step 1: LinkedIn Profile URL Input
 if st.session_state.current_step == 1:
     st.markdown("""
     <div class="step-content">
-        <div class="step-title">📋 Export Your LinkedIn Posts</div>
+        <div class="step-title">🔗 LinkedIn Profile Input</div>
     </div>
-    """,
-                unsafe_allow_html=True)
+    """, unsafe_allow_html=True)
 
-
+    # LinkedIn URL input
+    linkedin_url = st.text_input(
+        "Paste Your LinkedIn Profile URL",
+        value=st.session_state.linkedin_url,
+        placeholder="https://linkedin.com/in/yourprofile",
+        help="Enter your LinkedIn profile URL to generate your activity link"
+    )
+    
+    # Update session state
+    st.session_state.linkedin_url = linkedin_url
+    
+    # Generate activity URL if profile URL is provided
+    if linkedin_url.strip():
+        # Extract username from LinkedIn URL
+        if "/in/" in linkedin_url:
+            username = linkedin_url.split("/in/")[1].split("/")[0]
+            activity_url = f"https://linkedin.com/in/{username}/recent-activity/all/"
+            
+            st.markdown(f"""
+            <div class="success-card">
+                <h4>Your LinkedIn Activity URL</h4>
+                <p><a href="{activity_url}" target="_blank">{activity_url}</a></p>
+                <p><em>Click the link above to go to your LinkedIn activity page</em></p>
+            </div>
+            """, unsafe_allow_html=True)
 
     # Instructions card
     with st.expander("How to export your LinkedIn posts", expanded=False):
