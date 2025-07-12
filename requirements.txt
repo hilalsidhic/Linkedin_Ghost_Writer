@@ -7,3 +7,4 @@ pyperclip>=1.9.0
 sift-stack-py>=0.7.0
 streamlit>=1.46.1
 python-dotenv
+langchain_google_genai
