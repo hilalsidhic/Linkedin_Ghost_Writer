@@ -1,0 +1,8 @@
+beautifulsoup4>=4.13.4
+google-genai>=1.25.0
+langchain>=0.3.26
+langchain-community>=0.3.27
+lxml>=6.0.0
+pyperclip>=1.9.0
+sift-stack-py>=0.7.0
+streamlit>=1.46.1
