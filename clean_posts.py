@@ -1,9 +1,14 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 import concurrent.futures
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 llm = ChatGoogleGenerativeAI(
     model=os.getenv("GEMINI_MODEL"),
-    google_api_key=os.getenv("GOOGLE_API_KEY"),
+    google_api_key=os.getenv("GOOGLE_API_KEY")
 )
 
 def clean_posts_parallel(posts):

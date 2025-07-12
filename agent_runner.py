@@ -4,6 +4,11 @@ from langchain.agents import initialize_agent, AgentType, Tool
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.rate_limiters import InMemoryRateLimiter
 import json
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 
 # ---------------------------------------------------------
 # Import your core logic

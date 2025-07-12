@@ -1,5 +1,10 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
+
 
 llm = ChatGoogleGenerativeAI(
     model="gemini-2.0-flash-lite",
