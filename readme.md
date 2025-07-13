@@ -1,117 +1,86 @@
-# Write Like Me - LinkedIn Ghostwriter
+# Write Like Me – LinkedIn Ghostwriter ✍️
+
+**📌 Hosted Demo:** [Write-Like-Me](https://write-like-me.streamlit.app/)
+
+---
 
 ## Overview
 
-This is a Streamlit-based web application that serves as a personal LinkedIn ghostwriter. The application analyzes a user's existing LinkedIn posts to understand their writing style and generates new posts in the same voice. It uses Google's Gemini AI model for natural language processing and style analysis.
+**Problem:**  
+Writing consistent, authentic LinkedIn posts is time-consuming—particularly mimicking your own voice. Where do you start?
 
-## User Preferences
+**Solution:**  
+*Write Like Me* learns your unique writing style from past posts and generates new, on-brand LinkedIn content with minimal input.
 
-Preferred communication style: Simple, everyday language.
+---
 
-## System Architecture
+## 🧭 What It Does
 
-The application follows a simple multi-module architecture with clear separation of concerns:
+1. **Upload your LinkedIn posts** (via MHTML export).  
+2. The app **extracts and scores** posts for engagement.  
+3. It uses Google Gemini to **analyze your tone, structure, emojis, keywords, openings, closings**.  
+4. You can **copy your personal Style Guide** or enter a topic.  
+5. **New posts are generated automatically**, matched to your voice—with copy and download options.
 
-- **Frontend**: Streamlit web application with custom CSS styling
-- **Backend**: Python modules for data processing and AI integration
-- **AI Integration**: Google Gemini API for style analysis and content generation
-- **Data Processing**: BeautifulSoup and LangChain for parsing LinkedIn data
+---
 
-## Key Components
+## 🛠️ System Architecture & Tools
 
-### 1. Web Interface (`app.py`)
-- **Purpose**: Main Streamlit application providing the user interface
-- **Features**: 
-  - File upload for MHTML files
-  - Step-by-step workflow guidance
-  - Custom CSS styling for professional appearance
-  - Copy-to-clipboard functionality
-- **Design**: Clean, modern interface with LinkedIn-inspired color scheme
+| Component             | Technology                             | Purpose                                               |
+|-----------------------|----------------------------------------|-------------------------------------------------------|
+| **Frontend**          | Streamlit + HTML/CSS                   | Clean, step-by-step wizard UI                        |
+| **Backend**           | Python modules                         | Handles file parsing, analysis, content generation   |
+| **HTML Parsing**      | BeautifulSoup                          | Extracts LinkedIn text comfortably                  |
+| **Style & Generation**| Gemini 2.5‑Flash via LangChain         | Fast AI-powered insights and writing aid             |
+| **Text Cleanup**      | Regex / Local NLP                      | Removes UI artifacts, ensures readability            |
+| **Clipboard/Download**| Custom JS + Streamlit components       | Instant copy, user-friendly download                 |
 
-### 2. Data Loading (`loaders.py`)
-- **Purpose**: Extract and process LinkedIn posts from MHTML files
-- **Key Functions**:
-  - `load_mhtml()`: Loads MHTML files using LangChain
-  - `extract_posts()`: Parses and cleans LinkedIn post content
-- **Features**:
-  - Filters out reposts and shares
-  - Removes very short posts (< 10 words)
-  - Engagement scoring system (impressions, likes, comments)
+---
 
-### 3. Style Analysis (`style_analyzer.py`)
-- **Purpose**: Analyze writing patterns from user's posts
-- **AI Model**: Google Gemini 2.5 Pro
-- **Analysis Areas**:
-  - Tone and voice
-  - Sentence structure
-  - Common vocabulary and phrases
-  - Emoji and hashtag usage
-  - Recurring themes
+## 🧠 Skills Showcased
 
-### 4. Content Generation (`generator.py`)
-- **Purpose**: Generate new LinkedIn posts matching user's style
-- **AI Model**: Google Gemini 2.5 Pro
-- **Features**:
-  - Topic-based post generation
-  - Style-guided content creation
-  - 100-200 word limit enforcement
-  - Professional tone maintenance
+- Modern web app UI with **Streamlit** and refined custom CSS  
+- Integration with **Google's Gemini AI** using LangChain  
+- Data parsing with **BeautifulSoup**, regex, and NLP  
+- JavaScript for in-browser **copy-to-clipboard** and UX feedback  
+- UX design: clear 4‑step wizard, consistent styling, progressive feedback  
+- Secure handling of local files and sensitive API keys  
 
-## Data Flow
+---
 
-1. **Input**: User uploads MHTML file of their LinkedIn activity
-2. **Processing**: 
-   - Parse MHTML content using BeautifulSoup
-   - Extract individual posts and clean text
-   - Filter and score posts by engagement
-3. **Analysis**: 
-   - Send top-performing posts to Gemini for style analysis
-   - Generate comprehensive style guide
-4. **Generation**: 
-   - User provides topic/theme
-   - Gemini generates new post using analyzed style
-5. **Output**: Formatted post ready for LinkedIn with copy functionality
+## 🚀 Quick Start (Local)
 
-## External Dependencies
+1. Clone repo  
+2. Set env variable: `export GEMINI_API_KEY="your_key"`  
+3. Install dependencies: `pip install -r requirements.txt`  
+4. Run app: `streamlit run app.py`
 
-### Core Libraries
-- **Streamlit**: Web application framework
-- **LangChain Community**: MHTML document loading
-- **BeautifulSoup4**: HTML parsing and text extraction
-- **Google GenAI**: AI model integration
-- **pyperclip**: Clipboard functionality
+---
 
-### AI Services
-- **Google Gemini 2.5 Pro**: Primary AI model for both style analysis and content generation
-- **API Key**: Required environment variable `GEMINI_API_KEY`
+## 🌐 Production
 
-### Data Processing
-- **MHTML Support**: Processes LinkedIn export files
-- **HTML Parsing**: Extracts clean text from complex LinkedIn HTML structure
-- **Regular Expressions**: Text cleaning and pattern matching
+- Hosted on Streamlit Cloud or similar  
+- Secures API key via environment variables  
+- Cleans up temporary MHTML files after use  
+- Built-in error handling and adaptive feedback  
+- AI usage optimized to minimize quota usage  
 
-## Deployment Strategy
+---
 
-### Environment Setup
-- **Python Environment**: Requires Python 3.8+
-- **Environment Variables**: 
-  - `GEMINI_API_KEY`: Google AI API key
-- **Dependencies**: Install via `pip install -r requirements.txt`
+## 🛡️ Security & Privacy
 
-### Local Development
-- **Run Command**: `streamlit run app.py`
-- **Port**: Default Streamlit port (8501)
-- **File Storage**: Temporary files for MHTML processing
+- Posts are **processed locally**, without permanent storage  
+- API key never exposed publicly  
+- No logging or retention of personal LinkedIn content  
 
-### Production Considerations
-- **API Key Management**: Secure storage of Gemini API key
-- **File Handling**: Temporary file cleanup after processing
-- **Error Handling**: Graceful degradation for API failures
-- **Rate Limiting**: Consider API usage limits for Gemini
+---
 
-### Security Notes
-- **Data Privacy**: Files processed locally, not stored permanently
-- **API Security**: Gemini API key should be properly secured
-- **User Data**: No persistent storage of user content or LinkedIn data
+## 💬 Feedback & Contact
 
-The application prioritizes user privacy by processing MHTML files locally and not storing any personal LinkedIn data permanently. The modular architecture allows for easy maintenance and future enhancements.
+- GitHub: [@hilalsidhic](https://github.com/hilalsidhic)  
+- Email: hilalsidhic21@gmail.com
+
+*Want to see this integrated into your personal website? Reach out—I’d love to help build your custom AI content assistant.*
+
+---
+
