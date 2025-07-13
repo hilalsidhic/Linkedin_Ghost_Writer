@@ -171,6 +171,8 @@ def run_agent_rewrite_post(post_text: str, instruction: str) -> str:
 
     Tool you have:
     1️⃣ rewrite_post → Input: JSON with keys: post, instruction
+    2️⃣ suggest_hashtags → Input: topic: ..., style: ...
+    3️⃣ suggest_cta → Input: post text
 
     Your job:
     - Rewrite this post:

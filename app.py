@@ -378,10 +378,12 @@ def render_copy_button(label: str, text_to_copy: str, button_id: str = "copyBtn"
             color: white; 
             border: none; 
             border-radius: 6px; 
-            padding: 0.75rem 1.25rem; 
+            padding: 0.5rem 1rem; 
             font-size: 1rem;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 0px;
+            align-items: top;
+            width: 100%;
         ">
             📋 {label}
         </button>
@@ -765,73 +767,91 @@ elif st.session_state.current_step == 3:
         previous_step()
 
 
-
-# Step 4: Generate New Post
 elif st.session_state.current_step == 4:
     st.markdown("""
     <div class="step-content">
         <div class="step-title">🎉 Your Generated Post</div>
     </div>
     """, unsafe_allow_html=True)
-
+    
+    # Initialize generated post if not exists
+    st.session_state.generated_post = st.session_state.generated_post or ""
+    
+    # Display the generated post
     st.markdown(f"""
     <div class="success-card">
-        <h4>Here’s what your LinkedIn post looks like:</h4>
+        <h4>Here's what your LinkedIn post looks like:</h4>
     </div>
     <div id="generated-post" class="generated-post">
         {st.session_state.generated_post.replace(chr(10), '<br>')}
     </div>
     """, unsafe_allow_html=True)
 
+    # Main action buttons (grouped together)
+    st.markdown("### 📤 Export Options")
     col1, col2, col3 = st.columns(3)
-
+    
     with col1:
         render_copy_button("Copy Post", st.session_state.generated_post, button_id="copyPost")
-
+    
     with col2:
         st.download_button(
-            "Download as .txt",
+            "📥 Download as .txt",
             st.session_state.generated_post,
             "linkedin_post.txt",
             "text/plain"
         )
-
+    
     with col3:
-        if st.button("Start Over 🔄", type="secondary"):
+        if st.button("🔄 Start Over", type="secondary"):
             reset_session_state()
 
+    # Separator
     st.markdown("---")
-    progress = st.empty()
-
-    # 👉 Extra controls below
-    col4, col5 = st.columns([1, 1])
-
-    with col4:
-        if st.button("Estimate Virality 📊"):
+    
+    # Advanced controls section
+    st.markdown("### 🔧 Advanced Options")
+    
+    # Virality estimation section
+    st.markdown("#### 📊 Virality Analysis")
+    if st.button("Estimate Virality", type="primary"):
+        with st.spinner("Analyzing post virality..."):
             virality_result = run_agent_estimate_virality(st.session_state.generated_post)
             st.session_state.virality_score = virality_result["output"]
-            progress.markdown(f"""
-                <div class="success-card">
-                    <h4>✅ Estimated Virality: {st.session_state.virality_score}</h4>
-                </div>
-            """, unsafe_allow_html=True)
-
-    with col5:
+        
+        st.markdown(f"""
+            <div class="success-card">
+                <h4>✅ Estimated Virality: {st.session_state.virality_score}</h4>
+            </div>
+        """, unsafe_allow_html=True)
+    
+    # Post rewriting section
+    st.markdown("#### ✏️ Rewrite Post")
+    col4, col5 = st.columns([2, 1])
+    
+    with col4:
         rewrite_instruction = st.text_input(
             "Rewrite Instruction",
-            placeholder="e.g., make it more emotional"
+            placeholder="e.g., make it more emotional, add more hashtags, make it shorter",
+            help="Provide specific instructions on how you'd like to modify the post"
         )
-        if st.button("Rewrite Post ✏️"):
+    
+    with col5:
+        st.markdown("<br>", unsafe_allow_html=True)  # Add some spacing
+        if st.button("Rewrite Post", type="primary"):
             if rewrite_instruction.strip():
-                rewritten_post = run_agent_rewrite_post(
-                    st.session_state.generated_post,
-                    rewrite_instruction
-                )
-                st.session_state.generated_post = rewritten_post["output"]
+                with st.spinner("Rewriting post..."):
+                    rewritten_post = run_agent_rewrite_post(
+                        st.session_state.generated_post,
+                        rewrite_instruction
+                    )
+                    st.session_state.generated_post = rewritten_post["output"]
                 st.success("Post rewritten successfully!")
                 st.rerun()
             else:
                 st.warning("Please enter a rewrite instruction.")
+
+
 
 # Footer
 st.markdown("""
